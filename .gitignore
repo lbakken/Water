@@ -1,0 +1,6 @@
+# remove files specific to vscode
+.vscode
+
+# remove all node modules
+# to get modules, run "npm i" after pull
+**/node_modules
