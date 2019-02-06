@@ -8,13 +8,13 @@ Repository for Water application
 
 ## Branch Development Strategy
 |--Master  
-	|--Dev1  
-	|	|--Development1  
-	|	|--(...)  
-	|	|--Developmentn  
-	|  
-	|--Dev2  
-		|...  
+|	|--Dev1  
+|	|	|--Development1  
+|	|	|--(...)  
+|	|	|--Developmentn  
+|	|  
+|	|--Dev2  
+|		|...  
 
 * The Master branch will be linked to the Heroku service.
 	* On a push to master, the application will be built and sent to Heroku
