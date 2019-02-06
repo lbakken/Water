@@ -2,9 +2,9 @@
 Repository for Water application
 
 ## First Time Installation Steps:
-`sudo npm i`        - Install all npm dependencies
-`sudo npm test`     - Ensure the project works as intended
-`sudo npm start`    - Launch the Dev-Server on your localhost
+* `sudo npm i`        - Install all npm dependencies  
+* `sudo npm test`     - Ensure the project works as intended  
+* `sudo npm start`    - Launch the Dev-Server on your localhost  
 
 ## Branch Development Strategy
 |--Master  
@@ -14,7 +14,7 @@ Repository for Water application
 |	|	|--Developmentn  
 |	|  
 |	|--Dev2  
-|		|...  
+|	|	|...  
 
 * The Master branch will be linked to the Heroku service.
 	* On a push to master, the application will be built and sent to Heroku
