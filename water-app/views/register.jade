@@ -1,5 +1,32 @@
-extends layout
-
-block content
-  h1 Registration
-  p Welcome to register page
+doctype html
+html(lang='en')
+  head
+    title Sign Up Form
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js')
+  body(style='background-color: cadetblue')
+    .text-dark(style="font-family: 'Comic Sans MS'")
+      center
+        .page-header
+          h2 Registration
+      .form-group
+        label(for='first') First Name:
+        input#first.form-control(type='text')
+      .form-group
+        label(for='last') Last Name:
+        input#last.form-control(type='text')
+      .form-group
+        label(for='usr') Username:
+        input#usr.form-control(type='password')
+      .form-group
+        label(for='pwd') Email:
+        input#eml.form-control(type='password')
+      .form-group
+        label(for='pwd') Password:
+        input#pwd.form-control(type='password')
+    button.btn.btn-light(type='button')
+      a.text-dark(style="font-family: 'Comic Sans MS'", href='login.jade')  Register
