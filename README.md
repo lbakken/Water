@@ -33,3 +33,4 @@ https://trello.com/invite/b/dSRrvyfR/37dcdd3eef4cb950ae7269e3aa6a702b/water
 
 ## Slack Link
 https://team-software-dev.slack.com
+Hassan Alsahli
