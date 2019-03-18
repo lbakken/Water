@@ -1,6 +1,24 @@
+import time
 import serial
-from time import sleep as slp
+import requests
 
-ser = serial.Serial('/dev/serial0', baudrate=9600, parity=serial.PARITY_NONE,
-	stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=0)
+ser = serial.Serial('/dev/ttyUSB0', 9600)
+ser.flushInput()
 
+def normalize(t, i):
+	# decompose into individual data points
+	data = i.split(',')
+	# post data to the database
+	return data
+
+while(True):
+	# send
+	ser.write(b'A')
+
+	# recieve
+	while(ser.in_waiting <= 0):
+		time.sleep(5)
+		continue
+	info = ser.readline()
+	print(info)
+	normalize(time.ctime(), info)
