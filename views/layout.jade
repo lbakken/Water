@@ -1,0 +1,27 @@
+doctype html
+html
+	head
+		title Bonsai Buddy
+		link(rel='shortcut icon', type='image/png', href='https://static.thenounproject.com/png/41654-200.png')
+		meta( charset='utf-8' )
+		meta( http-equiv='X-UA-Compatible', content='IE=edge' )
+		meta( name='viewport', content='width=device-width, initial-scale=1.0' )
+		meta( name='description', content='Baking Bootstrap Snippets with Jade' )
+		//- Bootswatch Theme
+		link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/flatly/bootstrap.min.css", rel="stylesheet")
+ 
+	body
+		h1 Bonsai Buddy
+
+		link(rel='stylesheet', href='/stylesheets/style.css')
+
+		.topnav
+			a.active(href='../') Home
+			.topnav-left
+				a(href='userHome') Plant Health
+				a(href='cameraFeed') Camera Feed
+				a(href='waterPump') Water Pump
+			.topnav-right
+				a(href='register') Sign Up
+				a(href='login') Log In
+		block content
