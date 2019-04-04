@@ -7,3 +7,94 @@ body
 	link(href='../public/stylesheets/style.css', rel='stylesheet')
 
 block content
+			.text-dark
+				center
+					.page-header
+						h2(align='center') Registration
+				.form-group(align='center')
+					label(for='first') First Name:
+					input#first.form-control(type='text' placeholder="First" style="width: 300px")
+				.form-group(align='center')
+					label(for='last') Last Name:
+					input#last.form-control(type='text' placeholder="Last Name" style="width: 300px")
+				.form-group(align='center')
+					label(for='usr') Username:
+					input#usr.form-control(type='text' placeholder="Username" style="width: 300px")
+				.form-group(align='center')
+					label(for='pwd') Password:
+					input#pwd.form-control(type='password' placeholder="Password" style="width: 300px")
+				.form-group(align='center')
+					label(for='cpwd') Confirm Password:
+					input#cpwd.form-control(type='password' placeholder="Confirm Password" style="width: 300px")
+
+					#message
+						h5 Password must contain the following:
+							p#letter.invalid
+								| A
+								b lowercase
+								|  letter
+							p#capital.invalid
+								| A
+								b capital (uppercase)
+								|  letter
+							p#number.invalid
+								| A
+								b number
+							p#length.invalid
+								| Minimum
+								b 8 characters
+
+					script.
+							var myInput = document.getElementById("psw");
+							var letter = document.getElementById("letter");
+							var capital = document.getElementById("capital");
+							var number = document.getElementById("number");
+							var length = document.getElementById("length");
+							// When the user clicks on the password field, show the message box
+							myInput.onfocus = function () {
+								document.getElementById("message").style.display = "block";
+							}
+							// When the user clicks outside of the password field, hide the message box
+							myInput.onblur = function () {
+								document.getElementById("message").style.display = "none";
+							}
+							// When the user starts to type something inside the password field
+							myInput.onkeyup = function () {
+								// Validate lowercase letters
+								var lowerCaseLetters = /[a-z]/g;
+								if (myInput.value.match(lowerCaseLetters)) {
+									letter.classList.remove("invalid");
+									letter.classList.add("valid");
+								} else {
+									letter.classList.remove("valid");
+									letter.classList.add("invalid");
+								}
+								// Validate capital letters
+								var upperCaseLetters = /[A-Z]/g;
+								if (myInput.value.match(upperCaseLetters)) {
+									capital.classList.remove("invalid");
+									capital.classList.add("valid");
+								} else {
+									capital.classList.remove("valid");
+									capital.classList.add("invalid");
+								}
+								// Validate numbers
+								var numbers = /[0-9]/g;
+								if (myInput.value.match(numbers)) {
+									number.classList.remove("invalid");
+									number.classList.add("valid");
+								} else {
+									number.classList.remove("valid");
+									number.classList.add("invalid");
+								}
+								// Validate length
+								if (myInput.value.length >= 8) {
+									length.classList.remove("invalid");
+									length.classList.add("valid");
+								} else {
+									length.classList.remove("valid");
+									length.classList.add("invalid");
+								}
+							}
+					a(href="login")
+						button.submit_button(type='submit') Register
