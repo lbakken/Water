@@ -1,0 +1,3 @@
+heroku pg:psql postgresql-triangular-24352 --app bonsai-buddy
+
+heroku pg:psql postgresql-horizontal-38778 --app bonsai-buddy
