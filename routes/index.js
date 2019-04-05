@@ -16,4 +16,14 @@ router.get('/register', function(req, res, next) {
   res.render('register', {});
 })
 
+/* GET userHome page. */
+router.get('/userHome', function(req, res, next) {
+  res.render('userHome', {});
+})
+
+/* GET camera page. */
+router.get('/CameraFeed', function(req, res, next) {
+  res.render('camera', {});
+})
+
 module.exports = router;
