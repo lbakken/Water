@@ -26,5 +26,4 @@ router.get('/CameraFeed', function(req, res, next) {
   res.render('camera', {});
 })
 
-
 module.exports = router;
