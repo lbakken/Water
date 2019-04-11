@@ -1,5 +1,24 @@
+doctype html
+html
 extends layout
+head
+
+body
+	link(href='../public/stylesheets/style.css', rel='stylesheet')
 
 block content
-  h1 Login
-  p Welcome to Login page
+			.page-header
+				h2(align='center') Login
+			.form-group(align='center')
+				label(for='userName') Username:
+				input#userName.form-control(type='text', placeholder='Username', style="width: 300px")
+			.form-group(align='center')
+				label(for='passWord') Password:
+				input#passWord.form-control(type='password', placeholder='Password', style="width: 300px")
+			.checkbox
+				label
+					input(type='checkbox', value='', align='center')
+					| Remember Me
+				br
+			a(href="userHome")
+				button.submit_button(type='submit' value='Log In') Login
