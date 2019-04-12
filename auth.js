@@ -8,32 +8,40 @@ var knex = require('knex')({
         port: '5432',
         user: 'gyiklnogoftxaw',
         password: '4ed2c78146de60f01e360a7dd390b3dbdee012f09d7e45cdd42dbd531ba46afe',
-        database: 'd9jgpghedbvma3'
+        database: 'd9jgpghedbvma3',
+        ssl: true
     }
 })
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
-  
-passport.deserializeUser(function(id, done) {
-    knex.select().from('users').where({ id }).timeout(1000, {cancel: true}).then((user) => {
+
+passport.deserializeUser(function (id, done) {
+    knex.select().from('users').where({ id }).timeout(1000, { cancel: true }).then((user) => {
         if (err) { return done(err) }
         else { done(null, user) }
     });
 });
 
-passport.use(new Strategy(
-    function(username, password, done) {
-      knex.select().from('users').where({ username }).timeout(1000, {cancel: true}).then((user) => {
-        if (err) { return done(err) }
-        else if (!user) {
+passport.use(new Strategy(function (username, password, done) {
+    knex.select().from('users').where({ username }).timeout(1000, { cancel: true }).then((user) => {
+        user = user[0];
+        if (!user) {
             return done(null, false, { message: 'Incorrect username.' })
         }
-        else if (!bcrypt.compareSync(password, user.password)) {
+
+        // User input + found user's salt rehashed and compared to found user's password
+        let hash = bcrypt.hashSync(password, user.password_salt);
+
+        if (!bcrypt.compareSync(hash, user.password_hash)) {
             return done(null, false, { message: 'Incorrect password.' })
         }
         else { return done(null, user, { message: 'Successful login.' }) }
-      })
-    }
+
+
+    }).catch(function (error) {
+        return done(error);
+    })
+}
 ));

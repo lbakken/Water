@@ -9,16 +9,16 @@ body
 block content
 			.page-header
 				h2(align='center') Login
-			.form-group(align='center')
-				label(for='userName') Username:
-				input#userName.form-control(type='text', placeholder='Username', style="width: 300px")
-			.form-group(align='center')
-				label(for='passWord') Password:
-				input#passWord.form-control(type='password', placeholder='Password', style="width: 300px")
-			.checkbox
-				label
-					input(type='checkbox', value='', align='center')
-					| Remember Me
-				br
-			a(href="userHome")
-				button.submit_button(type='submit' value='Log In') Login
+			form(class="form-group" method="POST" action="/login")
+				.form-group(align='center')
+					label(for='userName') Username:
+					input#userName.form-control(name='username' type='text', placeholder='Username', style="width: 300px")
+					label(for='passWord') Password:
+					input#passWord.form-control(name='password' type='password', placeholder='Password', style="width: 300px")
+					.checkbox
+						label
+							input(type='checkbox', value='', align='center')
+							| Remember Me
+						br
+
+					button.submit_button(type='submit') Login
