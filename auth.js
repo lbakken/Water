@@ -14,7 +14,7 @@ var knex = require('knex')({
 })
 
 passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    done(null, user.username);
 });
 
 passport.deserializeUser(function (id, done) {
@@ -27,21 +27,17 @@ passport.deserializeUser(function (id, done) {
 passport.use(new Strategy(function (username, password, done) {
     knex.select().from('users').where({ username }).timeout(1000, { cancel: true }).then((user) => {
         user = user[0];
+        console.log(!bcrypt.compareSync(password, user.password_hash));
         if (!user) {
             return done(null, false, { message: 'Incorrect username.' })
         }
-
-        // User input + found user's salt rehashed and compared to found user's password
-        let hash = bcrypt.hashSync(password, user.password_salt);
-
-        if (!bcrypt.compareSync(hash, user.password_hash)) {
+        if (!bcrypt.compareSync(password, user.password_hash)) {
             return done(null, false, { message: 'Incorrect password.' })
         }
         else { return done(null, user, { message: 'Successful login.' }) }
 
-
     }).catch(function (error) {
         return done(error);
     })
-}
-));
+
+}));

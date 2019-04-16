@@ -1,9 +1,21 @@
 var express = require('express');
 var router = express.Router();
 
-
 require('../auth.js');
-var passport = require('passport');
+var passport = require('passport')
+var bcrypt = require('bcryptjs')
+var knex = require('knex')({
+  client: 'pg',
+  connection: {
+    host: 'ec2-107-20-183-142.compute-1.amazonaws.com',
+    port: '5432',
+    user: 'gyiklnogoftxaw',
+    password: '4ed2c78146de60f01e360a7dd390b3dbdee012f09d7e45cdd42dbd531ba46afe',
+    database: 'd9jgpghedbvma3',
+    ssl: true
+  }
+})
+
 
 
 /* GET home page. */
@@ -16,14 +28,15 @@ router.get('/login', function (req, res, next) {
   res.render('login', {});
 })
 
-router.post('/login', function (req, res, next) {
-  passport.authenticate('local', {
-    successRedirect: '/users/' + req.body.username,
-    failureRedirect: '/login',
-    failureFlash: true
-  })(req, res, next);
-});
+/* POST login page. */
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/userHome',
+  failureRedirect: '/login',
+  failureFlash: 'Invalid username or password.',
+  failureFlash: true
+}));
 
+/* GET logout page. */
 router.get('/logout', function (req, res, next) {
   req.logout()
   res.redirect('/')
@@ -32,8 +45,31 @@ router.get('/logout', function (req, res, next) {
 /* GET register page. */
 router.get('/register', function (req, res, next) {
   res.render('register', {});
-  // sql query for new users 
-  // INSERT INTO users(username, password_salt, password_hash, email, created) VALUES(..., current_timestamp);
+})
+
+/* POST register page */
+router.post('/register', function (req, res, next) {
+  let saltRounds = 10;
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    if (err) console.error(err);
+    // username, password, email;
+    knex('users').insert({
+      username: req.body.username,
+      password_hash: hash,
+      password_salt: '123',
+      email: req.body.email,
+      created: new Date()
+    }).whereNotExists(
+      knex.select('*').where('username', req.body.username)
+    ).then(function (res) {
+      // Redirect to login page?
+      console.log(res);
+    }).catch(function (err) {
+      // Username Already exists
+      console.error(err.detail);
+    })
+
+  })
 })
 
 /* GET userHome page. */
