@@ -7,6 +7,7 @@ body
   link(href='../public/stylesheets/style.css', rel='stylesheet')
 
 block content
+<<<<<<< HEAD
   .main.container
     .row
       .col-md-6.col-md-offset-3
@@ -19,3 +20,20 @@ block content
           label(for='password') Password
           input.form-control(type='password' id='password' placeholder='password' name='password')
         button.btn.btn-primary(type='submit') Log in 
+=======
+			.page-header
+				h2(align='center') Login
+			form(class="form-group" method="POST" action="/login")
+				.form-group(align='center')
+					label(for='userName') Username:
+					input#userName.form-control(name='username' type='text', placeholder='Username', style="width: 300px")
+					label(for='passWord') Password:
+					input#passWord.form-control(name='password' type='password', placeholder='Password', style="width: 300px")
+					.checkbox
+						label
+							input(type='checkbox', value='', align='center')
+							| Remember Me
+						br
+
+					button.submit_button(type='submit') Login
+>>>>>>> ca58b4099a2e1b37b8a409c36c3d5a863ea76e02

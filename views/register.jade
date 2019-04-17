@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h1 Registration
-  p Welcome to registration page
+  .page-header
+    h2(align='center') Registration
+  form(class="form-group" method="POST" action="/register")
+    .form-group(align='center')
+      label(for='userName') Username:
+      input#userName.form-control(name='username' type='text', placeholder='Username', style="width: 300px")
+      label(for='passWord') Email:
+      input#passWord.form-control(name='email' type='email', placeholder='email@domain.com', style="width: 300px")
+      label(for='passWord') Password:
+      input#passWord.form-control(name='password' type='password', placeholder='Password', style="width: 300px")
+      //- label(for='passWord') Re-type Password:
+      //- input#passWord.form-control(name='password' type='password', placeholder='Password', style="width: 300px")
+
+      button.submit_button(type='submit') Login

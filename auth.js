@@ -8,10 +8,12 @@ var knex = require('knex')({
         port: '5432',
         user: 'gyiklnogoftxaw',
         password: '4ed2c78146de60f01e360a7dd390b3dbdee012f09d7e45cdd42dbd531ba46afe',
-        database: 'd9jgpghedbvma3'
+        database: 'd9jgpghedbvma3',
+        ssl: true
     }
 })
 
+<<<<<<< HEAD
 passport.serializeUser(function(user, done) {
     alert('called serializeUser')
     done(null, user.id);
@@ -20,11 +22,20 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(id, done) {
     alert('called deserializeUser')
     knex.select().from('users').where({ id }).timeout(3000, {cancel: true}).then((user) => {
+=======
+passport.serializeUser(function (user, done) {
+    done(null, user.username);
+});
+
+passport.deserializeUser(function (id, done) {
+    knex.select().from('users').where({ id }).timeout(1000, { cancel: true }).then((user) => {
+>>>>>>> ca58b4099a2e1b37b8a409c36c3d5a863ea76e02
         if (err) { return done(err) }
         else { done(null, user) }
     });
 });
 
+<<<<<<< HEAD
 passport.use(new Strategy(
     function(username, password, done) {
       knex.select().from('users').where({ username }).timeout(3000, {cancel: true}).then((user) => {
@@ -81,3 +92,22 @@ module.exports = {
     loginRequired,
     isOpenUsername
 }
+=======
+passport.use(new Strategy(function (username, password, done) {
+    knex.select().from('users').where({ username }).timeout(1000, { cancel: true }).then((user) => {
+        user = user[0];
+        console.log(!bcrypt.compareSync(password, user.password_hash));
+        if (!user) {
+            return done(null, false, { message: 'Incorrect username.' })
+        }
+        if (!bcrypt.compareSync(password, user.password_hash)) {
+            return done(null, false, { message: 'Incorrect password.' })
+        }
+        else { return done(null, user, { message: 'Successful login.' }) }
+
+    }).catch(function (error) {
+        return done(error);
+    })
+
+}));
+>>>>>>> ca58b4099a2e1b37b8a409c36c3d5a863ea76e02
