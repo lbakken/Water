@@ -27,11 +27,11 @@ passport.deserializeUser(function (id, done) {
 passport.use(new Strategy(function (username, password, done) {
     knex.select().from('users').where({ username }).timeout(1000, { cancel: true }).then((user) => {
         user = user[0];
-        console.log(!bcrypt.compareSync(password, user.password_hash));
+        let inPass = bcrypt.hashSync(password, user.password_salt);
         if (!user) {
             return done(null, false, { message: 'Incorrect username.' })
         }
-        if (!bcrypt.compareSync(password, user.password_hash)) {
+        if (inPass == user.passport_hash) {
             return done(null, false, { message: 'Incorrect password.' })
         }
         else { return done(null, user, { message: 'Successful login.' }) }

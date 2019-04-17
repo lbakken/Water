@@ -16,8 +16,6 @@ var knex = require('knex')({
   }
 })
 
-
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Bonsai Buddy' });
@@ -50,25 +48,29 @@ router.get('/register', function (req, res, next) {
 /* POST register page */
 router.post('/register', function (req, res, next) {
   let saltRounds = 10;
-  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-    if (err) console.error(err);
-    // username, password, email;
-    knex('users').insert({
-      username: req.body.username,
-      password_hash: hash,
-      password_salt: '123',
-      email: req.body.email,
-      created: new Date()
-    }).whereNotExists(
-      knex.select('*').where('username', req.body.username)
-    ).then(function (res) {
-      // Redirect to login page?
-      console.log(res);
-    }).catch(function (err) {
-      // Username Already exists
-      console.error(err.detail);
-    })
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) throw err;
 
+    bcrypt.hash(req.body.password, salt, function (err, hash) {
+      if (err) throw err;
+      // username, password, email;
+      knex('users').insert({
+        username: req.body.username,
+        password_hash: hash,
+        password_salt: salt,
+        email: req.body.email,
+        created: new Date()
+      }).whereNotExists(
+        knex.select('*').where('username', req.body.username)
+      ).then(function (res) {
+        // Redirect to login page?
+        console.log(res);
+      }).catch(function (err) {
+        // Username Already exists
+        console.error(err.detail);
+      })
+
+    })
   })
 })
 
