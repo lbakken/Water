@@ -4,3 +4,7 @@
 # remove all node modules
 # to get modules, run "npm i" after pull
 **/node_modules
+
+.DS_Store
+
+.idea/
