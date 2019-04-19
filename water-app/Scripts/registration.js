@@ -6,6 +6,49 @@ function openModal()
     var password = document.getElementById('pwd');
     var confirm = document.getElementById('cpwd');
 
+    first_name.onkeyup = function()
+    {
+        if (username.value.length > 1)
+        {
+            username.style.borderColor = "Green"
+
+        }
+        else {
+            username.style.borderColor = "Red"
+
+
+        }
+    };
+    last_name.onkeyup = function()
+    {
+        if (username.value.length > 1)
+        {
+            username.style.borderColor = "Green"
+
+        }
+        else {
+            username.style.borderColor = "Red"
+
+
+        }
+    };
+
+    username.onkeyup = function () {
+        if (username.value.length > 5)
+        {
+            username.style.borderColor = "Green"
+
+        }
+        else {
+            username.style.borderColor = "Red"
+
+
+        }
+    };
+
+
+
+
     password.onkeyup = function()
     {
         console.log("hello");
@@ -52,7 +95,28 @@ function openModal()
 
 
 
-    }
+    };
+    confirm.onkeyup = function () {
+        var pa = password.value;
+        var cc = confirm.value;
+        var number = cc.localeCompare(pa);
+
+        if(number == 0) {
+            confirm.style.borderColor = "Green";
+            enablebutton();
+        }
+        else
+        {
+            confirm.style.borderColor = "Red";
+
+        }
+
+    };
+    function enablebutton()
+    {
+        var button = document.getElementById('Reg');
+        button.disabled = false;
+    };
 
 
 
