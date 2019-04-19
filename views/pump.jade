@@ -1,0 +1,12 @@
+doctype html
+html
+extends layout
+head
+  title Water Pump
+  link(href='../public/stylesheets/style.css', rel='stylesheet')
+body
+  block content
+  h2 Water Plant!
+  button(type='button', onclick="document.getElementById('time').innerHTML=
+  Plant last watered: ' + Date()") Water Plant
+  p#time
