@@ -40,7 +40,7 @@ img {
   padding: 14px 16px;
 }
 p {
-	padding: 14px 16px;
+  padding: 14px 16px;
 }
 
 .submit_button {
@@ -52,4 +52,57 @@ p {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+}
+.camera{
+  background-color: #4CAF50;
+  border: none;
+  position : absolute;
+  right: 0px;
+  width: 720px;
+  color: white;
+  padding: 15px 32px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.cameraL{
+  background-color: #7D26CD;
+  border: none;
+  position : absolute;
+  left: 0px;
+  width: 720px;
+  height:690px;
+  color: white;
+  padding: 15px 32px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.camerabr{
+  background-color: #add8e6;
+  border: none;
+  position : absolute;
+  right: 0px;
+  bottom:0px;
+  width: 720px;
+  height:425px;
+  color: white;
+  padding: 15px 32px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.camerat{
+  background-color: #000000;
+  border: none;
+  position : absolute;
+  right:16px;
+  bottom:8px;
+  width: 200px;
+  height:200px;
+  color: white;
+  padding: 15px 32px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 30px;
 }

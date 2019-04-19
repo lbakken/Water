@@ -1,5 +1,6 @@
-function openModal()
+function button()
 {
+
     var first_name = document.getElementById('first');
     var last_name = document.getElementById('last');
     var username = document.getElementById('usr');
@@ -117,7 +118,4 @@ function openModal()
         var button = document.getElementById('Reg');
         button.disabled = false;
     };
-
-
-
-}
+    }
