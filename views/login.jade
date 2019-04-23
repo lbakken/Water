@@ -7,18 +7,15 @@ body
   link(href='../public/stylesheets/style.css', rel='stylesheet')
 
 block content
-			.page-header
-				h2(align='center') Login
-			form(class="form-group" method="POST" action="/login")
-				.form-group(align='center')
-					label(for='userName') Username:
-					input#userName.form-control(name='username' type='text', placeholder='Username', style="width: 300px")
-					label(for='passWord') Password:
-					input#passWord.form-control(name='password' type='password', placeholder='Password', style="width: 300px")
-					.checkbox
-						label
-							input(type='checkbox', value='', align='center')
-							| Remember Me
-						br
-
-					button.submit_button(type='submit') Login
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 Log In
+        form(method='POST' action='/login')
+          div.form-group
+            label(for='email') Email
+            input.form-control(type='text' id='email' placeholder='email' name='email')
+          div.form-group
+            label(for='password') Password
+            input.form-control(type='password' id='password' placeholder='password' name='password')
+          button.btn.btn-primary(type='submit') Log in 
