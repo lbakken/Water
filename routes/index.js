@@ -91,4 +91,9 @@ router.get('/pump', function (req, res, next) {
   res.render('pump', {active_icon: 'pump'})
 })
 
+/* GET pump page. */
+router.get('/pump', function (req, res, next) {
+  res.render('pump', {});
+})
+
 module.exports = router;
