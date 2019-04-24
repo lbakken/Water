@@ -1,10 +1,5 @@
 var express = require('express');
 var router = express.Router();
-<<<<<<< HEAD
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-=======
 var passport = require('passport');
 // var passport = require('../auth')
 
@@ -25,24 +20,10 @@ var knex = require('knex')({
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
->>>>>>> Backend1
   res.render('index', { title: 'Bonsai Buddy' });
 });
 
 /* GET login page. */
-<<<<<<< HEAD
-router.get('/login', function(req, res, next) {
-  res.render('login', {});
-})
-
-/* GET register page. */
-router.get('/register', function(req, res, next) {
-  res.render('register', {});
-})
-
-/* GET userHome page. */
-router.get('/userHome', function(req, res, next) {
-=======
 router.get('/login', function (req, res, next) {
   res.render('login', {});
 })
@@ -97,21 +78,12 @@ router.post('/register', function (req, res, next) {
 
 /* GET userHome page. */
 router.get('/userHome', function (req, res, next) {
->>>>>>> Backend1
   res.render('userHome', {});
 })
 
 /* GET camera page. */
-<<<<<<< HEAD
-router.get('/CameraFeed', function(req, res, next) {
-  res.render('camera', {});
-})
-
-
-=======
 router.get('/CameraFeed', function (req, res, next) {
   res.render('camera', {});
 })
 
->>>>>>> Backend1
 module.exports = router;
