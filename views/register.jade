@@ -6,27 +6,108 @@ head
 
 body
     link(href='../public/stylesheets/style.css', rel='stylesheet')
-    script(src='../Scripts/registration.js')
+
 
 block content
     .text-dark
         center
             .page-header
-                h2(align='centenr') Registration
-        .form-group(align='center')
-            label(for='first') First Name:
-            input#first.form-control(type='text' placeholder="First" style="width: 300px" )
-        .form-group(align='center')
-            label(for='last') Last Name:
-            input#last.form-control(type='text' placeholder="Last Name" style="width: 300px")
-        .form-group(align='center')
-            label(for='usr') Username:
-            input#usr.form-control(type='text' placeholder="Username" style="width: 300px")
-        .form-group(align='center')
-            label(for='pwd') Password:
-            input#pwd.form-control(type='password' placeholder="Password" style="width: 300px")
-        .form-group(align='center')
-            label(for='cpwd') Confirm Password:
-            input#cpwd.form-control(type='password' placeholder="Confirm Password" style="width: 300px")
-        a(href="login")
-            button#Reg.submit_button(type='submit' disabled= '' onclick= "button()") Register
+                h2(align='center') Registration
+        form(method='POST')
+            .form-group(align='center')
+                label(for='first') First Name:
+                input#first.form-control(type='text' placeholder="First" style="width: 300px")
+            .form-group(align='center')
+                label(for='last') Last Name:
+                input#last.form-control(type='text' placeholder="Last Name" style="width: 300px")
+            .form-group(align='center')
+                label(for='usr') Username:
+                input#usr.form-control(type='text' placeholder="Username" style="width: 300px")
+                h6
+                    | your username must be at least 5 characters long
+            .form-group(align='center')
+                label(for='pwd') Password:
+                input#pwd.form-control(type='password' placeholder="Password" style="width: 300px")
+                h6
+                    | your password must be at least 8 characters including
+            .form-group(align='center')
+                label(for='cpwd') Confirm Password:
+                input#cpwd.form-control(type='password' placeholder="Confirm Password" style="width: 300px")
+                h6
+                    | a lowercase letter, a upper case letter, and a number
+            a(href="login")
+                button#Reg.submit_button(type='submit' disabled= '' onclick= "button()") Register
+    script.
+
+        var first_name = document.getElementById('first');
+        var last_name = document.getElementById('last');
+        var username = document.getElementById('usr');
+        var password = document.getElementById('pwd');
+        var confirm = document.getElementById('cpwd');
+
+        first_name.onkeyup = function () {
+            if (first_name.value.length > 1)
+                first_name.style.borderColor = "Green"
+            else
+                first_name.style.borderColor = "Red"
+        };
+        last_name.onkeyup = function () {
+            if (last_name.value.length > 1)
+                last_name.style.borderColor = "Green"
+            else
+                last_name.style.borderColor = "Red"
+        };
+        username.onkeyup = function () {
+            if (username.value.length > 5)
+                username.style.borderColor = "Green"
+            else
+                username.style.borderColor = "Red"
+        };
+
+        password.onkeyup = function () {
+            console.log("hello");
+            var lowerCaseLetters = /[a-z]/g; // : Fill in the regular experssion for lowerCaseLetters
+            var upperCaseLetters = /[A-Z]/g; // : Fill in the regular experssion for upperCaseLetters
+            var numbers = /[0-9]/g; // : Fill in the regular experssion for digits
+            var minLength = 8; // : Change the minimum length to what what it needs to be in the question
+
+            if (password.value.match(lowerCaseLetters))
+                password.style.borderColor = "Green"
+            else
+                password.style.borderColor = "RED"
+            if (password.value.match(upperCaseLetters))
+                password.style.borderColor = "Green"
+            else
+                password.style.borderColor = "RED"
+            if (password.value.match(numbers))
+                password.style.borderColor = "Green"
+            else
+                password.style.borderColor = "RED"
+            if (password.value.length() >= minLength)
+                password.style.borderColor = "Green"
+            else
+                password.style.borderColor = "RED"
+        };
+
+        confirm.onkeyup = function () {
+            var pa = password.value;
+            var cc = confirm.value;
+            var number = cc.localeCompare(pa);
+
+            if (number == 0) {
+                confirm.style.borderColor = "Green";
+                enablebutton()
+            }
+            else {
+                confirm.style.borderColor = "Red";
+            }
+
+        };
+
+        function enablebutton() {
+            {
+                var button = document.getElementById('Reg');
+                button.disabled = false;
+            }
+        };
+
