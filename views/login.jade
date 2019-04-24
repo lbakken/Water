@@ -1,35 +1,30 @@
 doctype html
 html
 extends layout
+
 head
 	meta(charset='utf-8')
 	meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
 	meta(name='description', content='')
 	title Login Page
-	//link(href='../resources/css/signin.css', rel='stylesheet')
+
+body
 	link(href='../resources/css/my_style.css', rel='stylesheet')
 
-body.center.text-center
-	block content
-		.text-dark
-			center
-				.page-header
-					h2(align='centenr') Log In
-		//- img(src='https://images-na.ssl-images-amazon.com/images/I/9198DT%2BYiSL._SY550_.jpg', alt='', width='300', height='300')
-		.form-group(align='center')
-			label(for='Email') Email:
-			input#first.form-control(type='text' placeholder="Email" style="width: 300px" )
-			label(for='Password') Password:
-			input#first.form-control(type='password' placeholder="Password" style="width: 300px" )
-			.checkbox.mb-3
-				label
-					input(type='checkbox', value='remember-me')
-					|  Remember me | 
-				a(href='') Forgot Password?
-			a(href="userHome")
-				button#Reg.submit_button(type='submit') Sign In
-			=" "
-			a(href="register")
-				button#Reg.submit_button(type='submit') Register
-			p.mt-5.mb-3.text-muted © 2019-2020
-		
+block content
+	.text-dark
+		center
+			.page-header
+				h2(align='center') Welcome Back!
+			form(method='POST' action='/login')
+				.form-group
+					label(for='username') Username:
+					input#username.form-control(type='text' placeholder="Username" style="width: 300px")
+				.form-group
+					label(for='password') Password:
+					input#password.form-control(type='password' placeholder="Password" style="width: 300px")
+			a(href="login")
+				button#Reg.submit_button(type='submit') Log in
+			b
+			h3 Don't have an account?   
+				a(href="register") Register Here		
