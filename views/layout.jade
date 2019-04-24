@@ -16,12 +16,15 @@ html
 		link(rel='stylesheet', href='/stylesheets/style.css')
 
 		.topnav
-			a.active(href='../') Home
 			.topnav-left
-				a(href='userHome') Plant Health
-				a(href='cameraFeed') Camera Feed
-				a(href='pump') Water Pump
+				a(href='../')#home Home
+				a(href='userHome')#health Plant Health
+				a(href='cameraFeed')#camera Camera Feed
+				a(href='pump')#pump Water Pump
 			.topnav-right
-				a(href='register') Sign Up
-				a(href='login') Log In
+				a(href='register')#register Register
+				a(href='login')#login Log In
 		block content
+
+script.
+	#{active_icon}.className += 'active'

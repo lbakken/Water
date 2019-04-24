@@ -20,12 +20,12 @@ var knex = require('knex')({
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Bonsai Buddy' });
+  res.render('index', { title: 'Bonsai Buddy',  active_icon: 'home'});
 });
 
 /* GET login page. */
 router.get('/login', function (req, res, next) {
-  res.render('login', {});
+  res.render('login', {active_icon: 'login'});
 })
 
 /* POST login page. */
@@ -44,7 +44,7 @@ router.get('/logout', function (req, res, next) {
 
 /* GET register page. */
 router.get('/register', function (req, res, next) {
-  res.render('register', {});
+  res.render('register', {active_icon: 'register'});
 })
 
 /* POST register page */
@@ -78,12 +78,17 @@ router.post('/register', function (req, res, next) {
 
 /* GET userHome page. */
 router.get('/userHome', function (req, res, next) {
-  res.render('userHome', {});
+  res.render('userHome', {active_icon: 'health'});
 })
 
 /* GET camera page. */
 router.get('/CameraFeed', function (req, res, next) {
-  res.render('camera', {});
+  res.render('camera', {active_icon: 'camera'});
+})
+
+/* Get water page. */
+router.get('/pump', function (req, res, next) {
+  res.render('pump', {active_icon: 'pump'})
 })
 
 module.exports = router;
