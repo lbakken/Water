@@ -1,5 +1,32 @@
+doctype html
+html
 extends layout
+head
+
+
+body
+    link(href='../public/stylesheets/style.css', rel='stylesheet')
+    script(src='../Scripts/registration.js')
 
 block content
-  h1 Registration
-  p Welcome to registration page
+    .text-dark
+        center
+            .page-header
+                h2(align='centenr') Registration
+        .form-group(align='center')
+            label(for='first') First Name:
+            input#first.form-control(type='text' placeholder="First" style="width: 300px" )
+        .form-group(align='center')
+            label(for='last') Last Name:
+            input#last.form-control(type='text' placeholder="Last Name" style="width: 300px")
+        .form-group(align='center')
+            label(for='usr') Username:
+            input#usr.form-control(type='text' placeholder="Username" style="width: 300px")
+        .form-group(align='center')
+            label(for='pwd') Password:
+            input#pwd.form-control(type='password' placeholder="Password" style="width: 300px")
+        .form-group(align='center')
+            label(for='cpwd') Confirm Password:
+            input#cpwd.form-control(type='password' placeholder="Confirm Password" style="width: 300px")
+        a(href="login")
+            button#Reg.submit_button(type='submit' disabled= '' onclick= "button()") Register
