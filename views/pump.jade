@@ -2,9 +2,11 @@ doctype html
 html
 extends layout
 head
-  title Water Pump
-  link(href='../public/stylesheets/style.css', rel='stylesheet')
+  link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css', integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS', crossorigin='anonymous
 body
-  h2 Water Plant!
+  link(href='../public/stylesheets/style.css', rel='stylesheet')
+
+  block content
+  title Water Plant!
   button(onclick="getElementById('time').innerHTML = Date()") Water Plant
   p#time
