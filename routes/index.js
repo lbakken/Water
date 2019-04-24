@@ -86,4 +86,9 @@ router.get('/CameraFeed', function (req, res, next) {
   res.render('camera', {});
 })
 
+/* GET pump page. */
+router.get('/pump', function (req, res, next) {
+  res.render('pump', {});
+})
+
 module.exports = router;
