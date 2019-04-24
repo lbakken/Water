@@ -5,6 +5,10 @@
 # to get modules, run "npm i" after pull
 **/node_modules
 
+<<<<<<< HEAD
 .DS_Store
 
 .idea/
+=======
+.DS_store
+>>>>>>> Backend1

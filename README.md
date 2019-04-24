@@ -2,7 +2,6 @@
 Repository for Water application
 
 ## First Time Installation Steps:
-* `cd water-app`			- Change directory into the nodejs app
 * `sudo npm i`        - Install all npm dependencies  
 * `sudo npm test`     - Ensure the project works as intended  
 * `sudo npm start`    - Launch the Dev-Server on your localhost  
