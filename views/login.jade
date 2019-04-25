@@ -9,7 +9,7 @@ head
 	title Login Page
 
 body
-	link(href='../resources/css/my_style.css', rel='stylesheet')
+	link(href='../resources/css/my_style', rel='stylesheet')
 
 block content
 	.text-dark
@@ -19,15 +19,14 @@ block content
 			form(method='POST' action='/login')
 				.form-group
 					label(for='username') Username:
-					input#username.form-control(name="uname" type='text' placeholder="Username" style="width: 300px")
+					input#username.form-control(name="username" type='text' placeholder="Username" style="width: 300px")
 				.form-group
 					label(for='password') Password:
-					input#password.form-control(name='pwd_hash' type='password' placeholder="Password" style="width: 300px")
-			a(href="login")
-				button#Reg.submit_button(type='submit') Log in
+					input#password.form-control(name='password' type='password' placeholder="Password" style="width: 300px")
+				a(href="login")
+					button#Reg.submit_button(type='submit') Log in
 			b
 			h3 Don't have an account?   
 				a(href="register") Register Here
 
 script.
-	console.log(!{logged_in})

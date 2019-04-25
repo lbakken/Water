@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
-require('../auth.js');
 var passport = require('passport')
 var bcrypt = require('bcryptjs')
 var knex = require('knex')({
@@ -16,6 +16,39 @@ var knex = require('knex')({
     ssl: true
   }
 })
+
+// used to serialize the user for the session
+passport.serializeUser(function(user, done) {
+  console.log('serialize called')
+  done(null, user.ID);
+});
+
+// used to deserialize the user
+passport.deserializeUser(function(id, done) {
+  console.log('deserialize called')
+  User.findById(id, function(err, user) {
+      done(err, user);
+  });
+});
+
+passport.use(new LocalStrategy(
+  function (username, password, done) {
+    knex.select('*').from('users').where('username', username).timeout(10000, {cancel: true}).then(
+      function (result) {
+        const _password_hash = result[0].password_hash.trim()
+        const user = result[0]
+        bcrypt.compare(password, _password_hash, function (err, res) {
+          console.log(res)
+          if (err) {
+            throw err
+          } else if (!res) {
+            return done(null, null, { message: 'Incorrect.' })
+          } else {
+            return done(null, user)
+          }
+        })
+    })
+}));
 
 function loggedIn(req, res, next) {
   if (req.user) {
@@ -37,7 +70,6 @@ router.get('/login', function (req, res, next) {
   res.render('login', {active_icon: 'login', logged_in: l});
 })
 
-/* POST login page. */
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/userHome',
   failureRedirect: '/login',
@@ -78,41 +110,12 @@ router.post('/register', function (req, res, next) {
       created: new Date()
     }).whereNotExists(
       knex.select('*').where('username', user_name)
-    ).then(function (result) {
-      console.log(result)
-      res.redirect('/login')
-    }).catch(function (error) {
+    ).catch(function (error) {
       throw error
+    }).then(function (result) {
+      res.redirect('/login')
     })
   })
-
-
-  // bcrypt.genSalt(saltRounds, function (err, salt) {
-  //   if (err) throw err;
-
-  //   bcrypt.hash(req.body.password, salt, function (err, hash) {
-  //     if (err) throw err;
-  //     // username, password, email;
-  //     knex('users').insert({
-  //       username: req.body.username,
-  //       password_hash: hash,
-  //       password_salt: salt,
-  //       email: req.body.email,
-  //       created: new Date()
-  //     }).whereNotExists(
-  //       knex.select('*').where('username', req.body.username)
-  //     ).then(function (res) {
-  //       // Redirect to login page?
-  //       res.redirect('/login')
-  //       console.log(res);
-  //     }).catch(function (err) {
-  //       // Username Already exists
-  //       alert('That username already exists')
-  //       // console.error(err.detail);
-  //     })
-
-    // })
-  // })
 })
 
 /* GET userHome page. */
