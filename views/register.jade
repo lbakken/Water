@@ -12,31 +12,34 @@ block content
     .text-dark
         center
             .page-header
-                h2(align='center') Registration
-        form(method='POST')
-            .form-group(align='center')
-                label(for='first') First Name:
-                input#first.form-control(type='text' placeholder="First" style="width: 300px")
-            .form-group(align='center')
-                label(for='last') Last Name:
-                input#last.form-control(type='text' placeholder="Last Name" style="width: 300px")
-            .form-group(align='center')
-                label(for='usr') Username:
-                input#usr.form-control(type='text' placeholder="Username" style="width: 300px")
-                h6
-                    | your username must be at least 5 characters long
-            .form-group(align='center')
-                label(for='pwd') Password:
-                input#pwd.form-control(type='password' placeholder="Password" style="width: 300px")
-                h6
-                    | your password must be at least 8 characters including
-            .form-group(align='center')
-                label(for='cpwd') Confirm Password:
-                input#cpwd.form-control(type='password' placeholder="Confirm Password" style="width: 300px")
-                h6
-                    | a lowercase letter, a upper case letter, and a number
-            a(href="login")
-                button#Reg.submit_button(type='submit' disabled= '' onclick= "button()") Register
+                h2 Registration
+            form(method='POST', action='/register')
+                .form-group
+                    label(for='first') First Name:
+                    input#first.form-control(name='first' type='text' placeholder="First" style="width: 300px")
+                .form-group
+                    label(for='last') Last Name:
+                    input#last.form-control(name='last' type='text' placeholder="Last Name" style="width: 300px")
+                .form-group
+                    label(for='email') Email:
+                    input#email.form-control(name='email' type='text' placeholder="example@mail.com" style="width: 300px")
+                .form-group
+                    label(for='usr') Username:
+                    input#usr.form-control(name='usr' type='text' placeholder="Username" style="width: 300px")
+                    h6
+                        | your username must be at least 5 characters long
+                .form-group
+                    label(for='pwd') Password:
+                    input#pwd.form-control(name='pwd' type='password' placeholder="Password" style="width: 300px")
+                    h6
+                        | your password must be at least 8 characters including
+                .form-group
+                    label(for='cpwd') Confirm Password:
+                    input#cpwd.form-control(type='password' placeholder="Confirm Password" style="width: 300px")
+                    h6
+                        | a lowercase letter, a upper case letter, and a number
+                a
+                    button#Reg.submit_button(type='submit' disabled='true') Register
     script.
 
         var first_name = document.getElementById('first');

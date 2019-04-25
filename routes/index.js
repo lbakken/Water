@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-// var passport = require('../auth')
 
 require('../auth.js');
 var passport = require('passport')
@@ -60,31 +59,60 @@ router.get('/register', function (req, res, next) {
 
 /* POST register page */
 router.post('/register', function (req, res, next) {
-  let saltRounds = 10;
-  bcrypt.genSalt(10, function (err, salt) {
-    if (err) throw err;
-
-    bcrypt.hash(req.body.password, salt, function (err, hash) {
-      if (err) throw err;
-      // username, password, email;
-      knex('users').insert({
-        username: req.body.username,
-        password_hash: hash,
-        password_salt: salt,
-        email: req.body.email,
-        created: new Date()
-      }).whereNotExists(
-        knex.select('*').where('username', req.body.username)
-      ).then(function (res) {
-        // Redirect to login page?
-        console.log(res);
-      }).catch(function (err) {
-        // Username Already exists
-        console.error(err.detail);
-      })
-
+  let saltRounds = 10
+  let plaintext = req.body.pwd
+  let user_name = req.body.usr
+  let e_mail = req.body.email
+  let firstname = req.body.first
+  let lastname = req.body.last
+  bcrypt.hash(plaintext, saltRounds, function(err, hash) {
+    if (err) {
+      throw err
+    }
+    knex('users').insert({
+      username: user_name,
+      password_hash: hash,
+      email: e_mail,
+      first_name: firstname,
+      last_name: lastname,
+      created: new Date()
+    }).whereNotExists(
+      knex.select('*').where('username', user_name)
+    ).then(function (result) {
+      console.log(result)
+      res.redirect('/login')
+    }).catch(function (error) {
+      throw error
     })
   })
+
+
+  // bcrypt.genSalt(saltRounds, function (err, salt) {
+  //   if (err) throw err;
+
+  //   bcrypt.hash(req.body.password, salt, function (err, hash) {
+  //     if (err) throw err;
+  //     // username, password, email;
+  //     knex('users').insert({
+  //       username: req.body.username,
+  //       password_hash: hash,
+  //       password_salt: salt,
+  //       email: req.body.email,
+  //       created: new Date()
+  //     }).whereNotExists(
+  //       knex.select('*').where('username', req.body.username)
+  //     ).then(function (res) {
+  //       // Redirect to login page?
+  //       res.redirect('/login')
+  //       console.log(res);
+  //     }).catch(function (err) {
+  //       // Username Already exists
+  //       alert('That username already exists')
+  //       // console.error(err.detail);
+  //     })
+
+    // })
+  // })
 })
 
 /* GET userHome page. */
