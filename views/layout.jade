@@ -17,9 +17,13 @@ html
 		.topnav
 			.topnav-left
 				a(href='../')#home Home
-				a(href='userHome')#health Plant Health
-				a(href='cameraFeed')#camera Camera Feed
-				a(href='pump')#pump Water Pump
+				- if (!{logged_in}) {
+					a(href='userHome')#health Plant Health
+
+					a(href='cameraFeed')#camera Camera Feed
+
+					a(href='pump')#pump Water Pump
+				- }
 			.topnav-right
 				a(href='login')#login Log In
 				a(href='register')#register Register
