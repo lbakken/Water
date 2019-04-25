@@ -1,12 +1,20 @@
 doctype html
 html
 extends layout
+
 head
-  link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css', integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS', crossorigin='anonymous')
+
 body
   link(href='../public/stylesheets/style.css', rel='stylesheet')
 
 block content
-  h2.center Water Plant!
-  button(align='center', onclick="getElementById('time').innerHTML = Date()") Water Plant
-  p#time
+  .text-dark
+    center
+      h2 Water Plant!
+      button(align='center', onclick='water()')#water_button Water Plant
+
+script.
+  function water() {
+    console.log('Watering that plant yo')
+    //- #{'water_button'}.active = 'false'
+  }

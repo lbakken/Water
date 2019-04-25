@@ -18,6 +18,14 @@ var knex = require('knex')({
   }
 })
 
+function loggedIn(req, res, next) {
+  if (req.user) {
+    next()
+  } else {
+    res.redirect('/logout')
+  }
+}
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   var l = (req.user) ? true : false;
@@ -41,7 +49,7 @@ router.post('/login', passport.authenticate('local', {
 /* GET logout page. */
 router.get('/logout', function (req, res, next) {
   req.logout()
-  res.redirect('/')
+  res.redirect('/login')
 })
 
 /* GET register page. */
@@ -80,18 +88,18 @@ router.post('/register', function (req, res, next) {
 })
 
 /* GET userHome page. */
-router.get('/userHome', function (req, res, next) {
-  res.render('userHome', {active_icon: 'health'});
+router.get('/userHome', loggedIn, function (req, res, next) {
+  res.render('userHome', {active_icon: 'health', logged_in: true, user_info: req.user});
 })
 
 /* GET camera page. */
-router.get('/CameraFeed', function (req, res, next) {
-  res.render('camera', {active_icon: 'camera'});
+router.get('/CameraFeed', loggedIn, function (req, res, next) {
+  res.render('camera', {active_icon: 'camera', logged_in: true, user_info: req.user});
 })
 
 /* GET pump page. */
-router.get('/pump', function (req, res, next) {
-  res.render('pump', {});
+router.get('/pump', loggedIn, function (req, res, next) {
+  res.render('pump', {active_icon: 'pump', logged_in: true, user_info: req.user});
 })
 
 module.exports = router;
