@@ -54,6 +54,18 @@ p {
   font-size: 16px;
   width: 300px;
 }
+.submit_button_disabled
+{
+  background-color: #7f7f7f; /* Gray */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  width: 300px;
+}
 
 .form-signin {
   width: 100%;
