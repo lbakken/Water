@@ -14,7 +14,13 @@ block content
       button(align='center', onclick='water()')#water_button Water Plant
 
 script.
+  function warning() {
+    alert('WARNING: Plant is automatically watered at 9am every morning.')
+  }
+
+script.
   function water() {
     console.log('Watering that plant yo')
+    document.getElementById("water").disabled = true;
     //- #{'water_button'}.active = 'false'
   }
