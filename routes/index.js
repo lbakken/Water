@@ -17,35 +17,17 @@ var knex = require('knex')({
   }
 })
 
-var global_user = null;
-
-// // used to serialize the user for the session
-// passport.serializeUser(function(user, done) {
-//   console.log('serialize called')
-//   done(null, user.ID);
-// });
-
-// // used to deserialize the user
-// passport.deserializeUser(function(id, done) {
-//   console.log('deserialize called')
-//   User.findById(id, function(err, user) {
-//       done(err, user);
-//   });
-// });
-
 passport.serializeUser(function (user, done) {
-  console.log(user)
   done(null, user.ID);
 });
 
-passport.deserializeUser(function (obj, done) {
-  User.loadOne({ _id: id }).then(function(user) {
-    done(null, user);
-  }).catch(function(err) {
-    done(err, null);
-  });
-  // console.log("deserializing " + obj);
-  // done(null, obj);
+passport.deserializeUser(function(id, cb) {
+  knex.select('*').from('users').where('ID', id).timeout(10000, { cancel: true }).then(
+    function (result) {
+      cb(null, result)
+    }).catch(function(error) {
+      cb(error, null)
+    })
 });
 
 passport.use(new LocalStrategy(
@@ -61,8 +43,6 @@ passport.use(new LocalStrategy(
           } else if (!res) {
             return done(null, false, { message: 'Incorrect.' })
           } else {
-            global_user = user
-            console.log(global_user)
             return done(null, user)
           }
         })
@@ -70,8 +50,7 @@ passport.use(new LocalStrategy(
   }));
 
 function loggedIn(req, res, next) {
-  console.log(req.session)
-  if (global_user !== undefined) {
+  if (req.user !== undefined) {
     next()
   } else {
     res.redirect('/logout')
@@ -80,39 +59,20 @@ function loggedIn(req, res, next) {
 
 /* GET logout page. */
 router.get('/logout', function (req, res, next) {
-  global_user = null
   res.redirect('/login')
 })
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  var l = (global_user) ? true : false;
+  var l = (req.user !== undefined);
   res.render('index', { title: 'Bonsai Buddy', active_icon: 'home', logged_in: l });
 });
 
 /* GET login page. */
 router.get('/login', function (req, res, next) {
-  var l = (global_user) ? true : false;
+  var l = (req.user !== undefined);
   res.render('login', { active_icon: 'login', logged_in: l });
 })
-
-// router.post('/login', function (req, res, next) {
-//   knex.select('*').from('users').where('username', req.body.username).timeout(10000, {cancel: true}).then(
-//     function (result) {
-//       const _password_hash = result[0].password_hash.trim()
-//       const user = result[0]
-//       bcrypt.compare(req.body.password, _password_hash, function (err, b_result) {
-//         if (err) {
-//           console.error(err);
-//         } else if (!b_result) {
-//           res.redirect('/logout')
-//         } else {
-//           console.log('user success')
-//           res.redirect('/')
-//         }
-//       })
-//   })
-// })
 
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/userHome',
@@ -121,7 +81,7 @@ router.post('/login', passport.authenticate('local', {
 
 /* GET register page. */
 router.get('/register', function (req, res, next) {
-  var l = (global_user) ? true : false;
+  var l = (req.user !== undefined);
   res.render('register', { active_icon: 'register', logged_in: l });
 })
 
@@ -154,26 +114,23 @@ router.post('/register', function (req, res, next) {
 
 /* GET userHome page. */
 router.get('/userHome', loggedIn, function (req, res, next) {
-  console.log(global_user);
-  // res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user });
-
-  knex.select('*').from('user_info').where('user_id', global_user.ID).orderBy('date_of_sensor', 'asc').timeout(10000, { cancel: true }).then(
+  knex.select('*').from('user_info').where('user_id', req.user[0].ID).orderBy('date_of_sensor', 'asc').timeout(10000, { cancel: true }).then(
     function (result) {
-      res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user, data: result });
+      res.render('userHome', { active_icon: 'health', logged_in: true, user_info: req.user[0], data: result });
     }).catch(function (error) {
       console.error('Error fetching sensor data', error);
-      res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user, data: [] });
+      res.render('userHome', { active_icon: 'health', logged_in: true, user_info: req.user[0], data: [] });
     })
 })
 
 /* GET camera page. */
 router.get('/CameraFeed', loggedIn, function (req, res, next) {
-  res.render('camera', { active_icon: 'camera', logged_in: true, user_info: global_user });
+  res.render('camera', { active_icon: 'camera', logged_in: true, user_info: req.user[0] });
 })
 
 /* GET pump page. */
 router.get('/pump', loggedIn, function (req, res, next) {
-  res.render('pump', { active_icon: 'pump', logged_in: true, user_info: global_user });
+  res.render('pump', { active_icon: 'pump', logged_in: true, user_info: req.user[0] });
 })
 
 module.exports = router;
