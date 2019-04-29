@@ -5,11 +5,11 @@ import datetime
 import psycopg2
 
 connection = psycopg2.connect(
-    user="sysadmin",
-    password="pynative@#29",
-    host="127.0.0.1",
+    user="gyiklnogoftxaw",
+    password="4ed2c78146de60f01e360a7dd390b3dbdee012f09d7e45cdd42dbd531ba46afe",
+    host="ec2-107-20-183-142.compute-1.amazonaws.com",
     port="5432",
-    database="postgres_db")
+    database="d9jgpghedbvma3")
 
    # cursor = connection.cursor()
    # postgres_insert_query = """ INSERT INTO mobile (ID, MODEL, PRICE) VALUES (%s,%s,%s)"""
