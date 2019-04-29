@@ -33,25 +33,25 @@ var global_user = null;
 //   });
 // });
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   console.log("serializing " + user.username);
   done(null, user);
 });
 
-passport.deserializeUser(function(obj, done) {
+passport.deserializeUser(function (obj, done) {
   console.log("deserializing " + obj);
   done(null, obj);
 });
 
 passport.use(new LocalStrategy(
   function (username, password, done) {
-    knex.select('*').from('users').where('username', username).timeout(10000, {cancel: true}).then(
+    knex.select('*').from('users').where('username', username).timeout(10000, { cancel: true }).then(
       function (result) {
         const _password_hash = result[0].password_hash.trim()
         const user = result[0]
         bcrypt.compare(password, _password_hash, function (err, res) {
           if (err) {
-            throw err
+            console.error(err);
           } else if (!res) {
             // req.session.error = 'Incorrect Password. Please try again.';
             return done(null, null, { message: 'Incorrect.' })
@@ -62,8 +62,8 @@ passport.use(new LocalStrategy(
             return done(null, user)
           }
         })
-    })
-}));
+      })
+  }));
 
 function loggedIn(req, res, next) {
   if (global_user) {
@@ -82,13 +82,13 @@ router.get('/logout', function (req, res, next) {
 /* GET home page. */
 router.get('/', function (req, res, next) {
   var l = (req.user) ? true : false;
-  res.render('index', { title: 'Bonsai Buddy',  active_icon: 'home', logged_in: l});
+  res.render('index', { title: 'Bonsai Buddy', active_icon: 'home', logged_in: l });
 });
 
 /* GET login page. */
 router.get('/login', function (req, res, next) {
   var l = (req.user) ? true : false;
-  res.render('login', {active_icon: 'login', logged_in: l});
+  res.render('login', { active_icon: 'login', logged_in: l });
 })
 
 // router.post('/login', function (req, res, next) {
@@ -117,7 +117,7 @@ router.post('/login', passport.authenticate('local', {
 /* GET register page. */
 router.get('/register', function (req, res, next) {
   var l = (req.user) ? true : false;
-  res.render('register', {active_icon: 'register', logged_in: l});
+  res.render('register', { active_icon: 'register', logged_in: l });
 })
 
 /* POST register page */
@@ -128,9 +128,9 @@ router.post('/register', function (req, res, next) {
   let e_mail = req.body.email
   let firstname = req.body.first
   let lastname = req.body.last
-  bcrypt.hash(plaintext, saltRounds, function(err, hash) {
+  bcrypt.hash(plaintext, saltRounds, function (err, hash) {
     if (err) {
-      throw err
+      console.error(err);
     }
     knex('users').insert({
       username: user_name,
@@ -139,10 +139,8 @@ router.post('/register', function (req, res, next) {
       first_name: firstname,
       last_name: lastname,
       created: new Date()
-    }).whereNotExists(
-      knex.select('*').where('username', user_name)
-    ).catch(function (error) {
-      throw error
+    }).catch(function (error) {
+      console.error(error);
     }).then(function (result) {
       res.redirect('/logout')
     })
@@ -152,17 +150,17 @@ router.post('/register', function (req, res, next) {
 /* GET userHome page. */
 router.get('/userHome', loggedIn, function (req, res, next) {
   console.log(global_user)
-  res.render('userHome', {active_icon: 'health', logged_in: true, user_info: global_user});
+  res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user });
 })
 
 /* GET camera page. */
 router.get('/CameraFeed', loggedIn, function (req, res, next) {
-  res.render('camera', {active_icon: 'camera', logged_in: true, user_info: global_user});
+  res.render('camera', { active_icon: 'camera', logged_in: true, user_info: global_user });
 })
 
 /* GET pump page. */
 router.get('/pump', loggedIn, function (req, res, next) {
-  res.render('pump', {active_icon: 'pump', logged_in: true, user_info: global_user});
+  res.render('pump', { active_icon: 'pump', logged_in: true, user_info: global_user });
 })
 
 module.exports = router;
