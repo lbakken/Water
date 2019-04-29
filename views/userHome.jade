@@ -4,33 +4,25 @@ extends layout
 head
 
 body
-	// links style sheet
-	link(href='../public/stylesheets/style.css', rel='stylesheet') 
+	link(href='../public/stylesheets/style.css', rel='stylesheet')
 
 block content
-	script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
-	script(type='text/javascript').
-		google.charts.load('current', {
-		'packages': ['corechart']
-		});
-		google.charts.setOnLoadCallback(drawChart);
-		function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-		['Year', 'Sales', 'Expenses'],
-		['2004', 1000, 400],
-		['2005', 1170, 460],
-		['2006', 660, 1120],
-		['2007', 1030, 540]
-		]);
-		var options = {
-		title: 'Company Performance',
-		curveType: 'function',
-		legend: {
-		position: 'bottom'
-		}
-		};
-		var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-		chart.draw(data, options);
-		}
-	#curve_chart(align='center', style='width: 100%;')
-	
+	.text-dark
+		center
+			h1 Plant Sensor Data
+			table.table
+				thead
+					tr
+						th Recording Date
+						th Temperature (C)
+						th Humidity (%)
+						th Photo-Resistivity (Ohms)
+						th Soil Moisture (Ohms)
+				tbody
+					- each item in data
+						tr
+							td= item.date_of_sensor
+							td= item.temperature
+							td= item.humidity
+							td= item.photo_resistivity
+							td= item.soil_moisture

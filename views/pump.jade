@@ -1,12 +1,29 @@
 doctype html
 html
 extends layout
+
 head
-  title Water Pump
-  link(href='../public/stylesheets/style.css', rel='stylesheet')
+
 body
-  block content
-  h2 Water Plant!
-  button(type='button', onclick="document.getElementById('time').innerHTML=
-  Plant last watered: ' + Date()") Water Plant
-  p#time
+  link(href='../public/stylesheets/style.css', rel='stylesheet')
+
+block content
+  .text-dark
+    center
+      h2 ( ALPHA ) Water Plant!
+      h3 The pump page will (eventually) allow you to water your plant from anywhere!
+      h3 This functionality is still in its alpha phase.
+      h4 Please remember, your plant is automatically watered every morning at 9:00 AM by default!
+      button.submit_button(onclick='water()')#water_button Water Plant
+
+  script.
+    function warning() {
+      alert('WARNING: Plant is automatically watered at 9am every morning.')
+    }
+
+    function water() {
+      var btn = document.getElementById("water_button")
+      btn.disabled = true;
+      btn.style.backgroundColor = "#7f7f7f";
+      warning()
+    }

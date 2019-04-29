@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-// var passport = require('../auth')
+var LocalStrategy = require('passport-local').Strategy;
 
-require('../auth.js');
 var passport = require('passport')
 var bcrypt = require('bcryptjs')
 var knex = require('knex')({
@@ -18,72 +17,156 @@ var knex = require('knex')({
   }
 })
 
+var global_user = null;
+
+// // used to serialize the user for the session
+// passport.serializeUser(function(user, done) {
+//   console.log('serialize called')
+//   done(null, user.ID);
+// });
+
+// // used to deserialize the user
+// passport.deserializeUser(function(id, done) {
+//   console.log('deserialize called')
+//   User.findById(id, function(err, user) {
+//       done(err, user);
+//   });
+// });
+
+passport.serializeUser(function (user, done) {
+  console.log("serializing " + user.username);
+  done(null, user);
+});
+
+passport.deserializeUser(function (obj, done) {
+  console.log("deserializing " + obj);
+  done(null, obj);
+});
+
+passport.use(new LocalStrategy(
+  function (username, password, done) {
+    knex.select('*').from('users').where('username', username).timeout(10000, { cancel: true }).then(
+      function (result) {
+        const _password_hash = result[0].password_hash.trim()
+        const user = result[0]
+        bcrypt.compare(password, _password_hash, function (err, res) {
+          if (err) {
+            console.error(err);
+          } else if (!res) {
+            return done(null, null, { message: 'Incorrect.' })
+          } else {
+            global_user = user
+            console.log(global_user)
+            return done(null, user)
+          }
+        })
+      })
+  }));
+
+function loggedIn(req, res, next) {
+  if (global_user) {
+    next()
+  } else {
+    res.redirect('/logout')
+  }
+}
+
+/* GET logout page. */
+router.get('/logout', function (req, res, next) {
+  // req.logout()
+  res.redirect('/login')
+})
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Bonsai Buddy' });
+  var l = (req.user) ? true : false;
+  res.render('index', { title: 'Bonsai Buddy', active_icon: 'home', logged_in: l });
 });
 
 /* GET login page. */
 router.get('/login', function (req, res, next) {
-  res.render('login', {});
+  var l = (req.user) ? true : false;
+  res.render('login', { active_icon: 'login', logged_in: l });
 })
 
-/* POST login page. */
+// router.post('/login', function (req, res, next) {
+//   knex.select('*').from('users').where('username', req.body.username).timeout(10000, {cancel: true}).then(
+//     function (result) {
+//       const _password_hash = result[0].password_hash.trim()
+//       const user = result[0]
+//       bcrypt.compare(req.body.password, _password_hash, function (err, b_result) {
+//         if (err) {
+//           console.error(err);
+//         } else if (!b_result) {
+//           res.redirect('/logout')
+//         } else {
+//           console.log('user success')
+//           res.redirect('/')
+//         }
+//       })
+//   })
+// })
+
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/userHome',
-  failureRedirect: '/login',
-  failureFlash: 'Invalid username or password.',
-  failureFlash: true
+  failureRedirect: '/login'
 }));
-
-/* GET logout page. */
-router.get('/logout', function (req, res, next) {
-  req.logout()
-  res.redirect('/')
-})
 
 /* GET register page. */
 router.get('/register', function (req, res, next) {
-  res.render('register', {});
+  var l = (req.user) ? true : false;
+  res.render('register', { active_icon: 'register', logged_in: l });
 })
 
 /* POST register page */
 router.post('/register', function (req, res, next) {
-  let saltRounds = 10;
-  bcrypt.genSalt(10, function (err, salt) {
-    if (err) throw err;
-
-    bcrypt.hash(req.body.password, salt, function (err, hash) {
-      if (err) throw err;
-      // username, password, email;
-      knex('users').insert({
-        username: req.body.username,
-        password_hash: hash,
-        password_salt: salt,
-        email: req.body.email,
-        created: new Date()
-      }).whereNotExists(
-        knex.select('*').where('username', req.body.username)
-      ).then(function (res) {
-        // Redirect to login page?
-        console.log(res);
-      }).catch(function (err) {
-        // Username Already exists
-        console.error(err.detail);
-      })
-
+  let saltRounds = 10
+  let plaintext = req.body.pwd
+  let user_name = req.body.usr
+  let e_mail = req.body.email
+  let firstname = req.body.first
+  let lastname = req.body.last
+  bcrypt.hash(plaintext, saltRounds, function (err, hash) {
+    if (err) {
+      console.error(err);
+    }
+    knex('users').insert({
+      username: user_name,
+      password_hash: hash,
+      email: e_mail,
+      first_name: firstname,
+      last_name: lastname,
+      created: new Date()
+    }).catch(function (error) {
+      console.error(error);
+    }).then(function (result) {
+      res.redirect('/logout')
     })
   })
 })
 
 /* GET userHome page. */
-router.get('/userHome', function (req, res, next) {
-  res.render('userHome', {});
+router.get('/userHome', loggedIn, function (req, res, next) {
+  console.log(global_user);
+  // res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user });
+
+  knex.select('*').from('user_info').where('user_id', global_user.ID).orderBy('date_of_sensor', 'asc').timeout(10000, { cancel: true }).then(
+    function (result) {
+      res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user, data: result });
+    }).catch(function (error) {
+      console.error('Error fetching sensor data', error);
+      res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user, data: [] });
+    })
 })
 
 /* GET camera page. */
-router.get('/CameraFeed', function (req, res, next) {
-  res.render('camera', {});
+router.get('/CameraFeed', loggedIn, function (req, res, next) {
+  res.render('camera', { active_icon: 'camera', logged_in: true, user_info: global_user });
+})
+
+/* GET pump page. */
+router.get('/pump', loggedIn, function (req, res, next) {
+  res.render('pump', { active_icon: 'pump', logged_in: true, user_info: global_user });
 })
 
 /* GET pump page. */

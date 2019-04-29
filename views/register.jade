@@ -3,30 +3,113 @@ html
 extends layout
 head
 
-
 body
     link(href='../public/stylesheets/style.css', rel='stylesheet')
-    script(src='../Scripts/registration.js')
 
 block content
     .text-dark
         center
             .page-header
-                h2(align='centenr') Registration
-        .form-group(align='center')
-            label(for='first') First Name:
-            input#first.form-control(type='text' placeholder="First" style="width: 300px" )
-        .form-group(align='center')
-            label(for='last') Last Name:
-            input#last.form-control(type='text' placeholder="Last Name" style="width: 300px")
-        .form-group(align='center')
-            label(for='usr') Username:
-            input#usr.form-control(type='text' placeholder="Username" style="width: 300px")
-        .form-group(align='center')
-            label(for='pwd') Password:
-            input#pwd.form-control(type='password' placeholder="Password" style="width: 300px")
-        .form-group(align='center')
-            label(for='cpwd') Confirm Password:
-            input#cpwd.form-control(type='password' placeholder="Confirm Password" style="width: 300px")
-        a(href="login")
-            button#Reg.submit_button(type='submit' disabled= '' onclick= "button()") Register
+                h2 Registration
+            form(method='POST', action='/register')
+                .form-group
+                    label(for='first' style= 'font-size: 20px') First Name:
+                    input#first.form-control(name='first' type='text' placeholder="First" style="width: 300px")
+                    p
+                .form-group
+                    label(for='last' style= 'font-size: 20px') Last Name:
+                    input#last.form-control(name='last' type='text' placeholder="Last Name" style="width: 300px")
+                    p
+                .form-group
+                    label(for='email' style= 'font-size: 20px') Email:
+                    input#email.form-control(name='email' type='text' placeholder="example@mail.com" style="width: 300px")
+                    p
+                .form-group
+                    label(for='usr' style= 'font-size: 20px') Username:
+                    input#usr.form-control(name='usr' type='text' placeholder="Username" style="width: 300px")
+                    h6
+                        | your username must be at least 5 characters long
+                .form-group
+                    label(for='pwd' style= 'font-size: 20px') Password:
+                    input#pwd.form-control(name='pwd' type='password' placeholder="Password" style="width: 300px")
+                    h6
+                        | your password must be at least 8 characters including
+                    h6
+                        | a lowercase letter, a upper case letter, and a number
+                .form-group
+                    label(for='cpwd' style= 'font-size: 20px') Confirm Password:
+                    input#cpwd.form-control(type='password' placeholder="Confirm Password" style="width: 300px")
+                    p
+                a
+                    button#Reg.submit_button_disabled(type='submit' disabled='true') Register
+    script.
+
+        var first_name = document.getElementById('first');
+        var last_name = document.getElementById('last');
+        var username = document.getElementById('usr');
+        var password = document.getElementById('pwd');
+        var confirm = document.getElementById('cpwd');
+        var email = document.getElementById('email');
+
+        first_name.onkeyup = function () {
+            if (first_name.value.length > 1)
+                first_name.style.borderColor = "Green"
+            else
+                first_name.style.borderColor = "Red"
+        };
+        last_name.onkeyup = function () {
+            if (last_name.value.length > 1)
+                last_name.style.borderColor = "Green"
+            else
+                last_name.style.borderColor = "Red"
+        };
+        email.onkeyup = function()
+        {
+            if(email.value.includes("@"))
+                email.style.borderColor = "Green"
+            else
+                email.style.borderColor = "Red"
+        };
+        username.onkeyup = function () {
+            if (username.value.length > 5)
+                username.style.borderColor = "Green"
+            else
+                username.style.borderColor = "Red"
+        };
+
+        password.onkeyup = function () {
+            console.log("hello");
+            var lowerCaseLetters = /[a-z]/g; // : Fill in the regular experssion for lowerCaseLetters
+            var upperCaseLetters = /[A-Z]/g; // : Fill in the regular experssion for upperCaseLetters
+            var numbers = /[0-9]/g; // : Fill in the regular experssion for digits
+            var minLength = 8; // : Change the minimum length to what what it needs to be in the question
+
+            if (password.value.length >= minLength && password.value.match(lowerCaseLetters) && password.value.match(upperCaseLetters) && password.value.match(numbers) )
+                password.style.borderColor = "Green"
+            else
+                password.style.borderColor = "RED"
+        };
+
+        confirm.onkeyup = function () {
+            var pa = password.value;
+            var cc = confirm.value;
+            var number = cc.localeCompare(pa);
+
+            if (number == 0) {
+                confirm.style.borderColor = "Green";
+                enablebutton()
+            }
+            else {
+                confirm.style.borderColor = "Red";
+            }
+
+        };
+
+        function enablebutton() {
+            {
+                var button = document.getElementById('Reg');
+                button.style.backgroundColor = "#4CAF50";
+                button.disabled = false;
+            }
+        };
+

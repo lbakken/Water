@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var session = require('express-session');
+var cookieParser = require('cookie-parser');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
@@ -20,18 +21,18 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser('insertsupersecretsecret'))
 app.use(session({
-  secret: 'TODO CHANGE',
-  resave: false,
-  saveUninitialized: false,
+  secret: 'insertsupersecretsecret',
   cookie: { secure: true }
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(flash());
+
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 
 
 app.use('/', indexRouter);
