@@ -34,13 +34,18 @@ var global_user = null;
 // });
 
 passport.serializeUser(function (user, done) {
-  console.log("serializing " + user.username);
-  done(null, user);
+  console.log(user)
+  done(null, user.ID);
 });
 
 passport.deserializeUser(function (obj, done) {
-  console.log("deserializing " + obj);
-  done(null, obj);
+  User.loadOne({ _id: id }).then(function(user) {
+    done(null, user);
+  }).catch(function(err) {
+    done(err, null);
+  });
+  // console.log("deserializing " + obj);
+  // done(null, obj);
 });
 
 passport.use(new LocalStrategy(
@@ -52,8 +57,9 @@ passport.use(new LocalStrategy(
         bcrypt.compare(password, _password_hash, function (err, res) {
           if (err) {
             console.error(err);
+            return done(err)
           } else if (!res) {
-            return done(null, null, { message: 'Incorrect.' })
+            return done(null, false, { message: 'Incorrect.' })
           } else {
             global_user = user
             console.log(global_user)
@@ -64,7 +70,8 @@ passport.use(new LocalStrategy(
   }));
 
 function loggedIn(req, res, next) {
-  if (global_user) {
+  console.log(req.session)
+  if (global_user !== undefined) {
     next()
   } else {
     res.redirect('/logout')
