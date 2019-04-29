@@ -181,3 +181,45 @@ th, td {
 tr:hover {
   background-color: #f5f5f5;
 }
+
+
+.camera{
+  background-color: #4CAF50;
+  /* border-radius: 5%; */
+  background-image: url("https://images.homedepot-static.com/productImages/bd8393eb-9cbd-4224-b7b8-7e15fbef5f7e/svn/brussel-s-bonsai-bonsai-trees-ct-0116ft-64_1000.jpg");
+  background-size: cover;
+  padding-top: 50px;
+  position : absolute;
+  left: 25%;
+  width: 50%;
+  height:100%;
+  color: white;
+  padding: 15px 32px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.background{
+  background-color: #000000;
+  position : absolute;
+  width: 21.5%;
+  left: auto;
+  height:100%;
+  color: white;
+  padding: 15px 32px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.backgrounds{
+  background-color: #000000;
+  position : absolute;
+  width: 21.5%;
+  right:3.5%;
+  height:100%;
+  color: white;
+  padding: 15px 32px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
