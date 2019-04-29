@@ -17,17 +17,18 @@ html
 		.topnav
 			.topnav-left
 				a(href='../')#home Home
-				- if (!(!(!{logged_in}))) {
-					a(href='userHome')#health Plant Health
-
-					a(href='cameraFeed')#camera Camera Feed
-
-					a(href='pump')#pump Water Pump
-				- }
+				a(href='userHome', style='display: none')#health Plant Health
+				a(href='cameraFeed', style='display: none')#camera Camera Feed
+				a(href='pump', style='display: none')#pump Water Pump
 			.topnav-right
 				a(href='login')#login Log In
 				a(href='register')#register Register
 		block content
 
 script.
+	if (!!!{logged_in}) {
+		#{'health'}.style.display = 'block'
+		#{'camera'}.style.display = 'block'
+		#{'pump'}.style.display = 'block'
+	}
 	#{active_icon}.className += 'active'

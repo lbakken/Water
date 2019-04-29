@@ -10,17 +10,20 @@ body
 block content
   .text-dark
     center
-      h2 Water Plant!
-      button(align='center', onclick='water()')#water_button Water Plant
+      h2 ( ALPHA ) Water Plant!
+      h3 The pump page will (eventually) allow you to water your plant from anywhere!
+      h3 This functionality is still in its alpha phase.
+      h4 Please remember, your plant is automatically watered every morning at 9:00 AM by default!
+      button.submit_button(onclick='water()')#water_button Water Plant
 
-script.
-  function warning() {
-    alert('WARNING: Plant is automatically watered at 9am every morning.')
-  }
+  script.
+    function warning() {
+      alert('WARNING: Plant is automatically watered at 9am every morning.')
+    }
 
-script.
-  function water() {
-    console.log('Watering that plant yo')
-    document.getElementById("water").disabled = true;
-    //- #{'water_button'}.active = 'false'
-  }
+    function water() {
+      var btn = document.getElementById("water_button")
+      btn.disabled = true;
+      btn.style.backgroundColor = "#7f7f7f";
+      warning()
+    }
