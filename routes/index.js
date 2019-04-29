@@ -53,12 +53,10 @@ passport.use(new LocalStrategy(
           if (err) {
             console.error(err);
           } else if (!res) {
-            // req.session.error = 'Incorrect Password. Please try again.';
             return done(null, null, { message: 'Incorrect.' })
           } else {
-            // req.session.success = 'You are successfully logged in ' + user.username + '!';
-            console.log(global_user)
             global_user = user
+            console.log(global_user)
             return done(null, user)
           }
         })
@@ -98,7 +96,7 @@ router.get('/login', function (req, res, next) {
 //       const user = result[0]
 //       bcrypt.compare(req.body.password, _password_hash, function (err, b_result) {
 //         if (err) {
-//           throw err
+//           console.error(err);
 //         } else if (!b_result) {
 //           res.redirect('/logout')
 //         } else {
@@ -149,8 +147,16 @@ router.post('/register', function (req, res, next) {
 
 /* GET userHome page. */
 router.get('/userHome', loggedIn, function (req, res, next) {
-  console.log(global_user)
-  res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user });
+  console.log(global_user);
+  // res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user });
+
+  knex.select('*').from('user_info').where('user_id', global_user.ID).orderBy('date_of_sensor', 'asc').timeout(10000, { cancel: true }).then(
+    function (result) {
+      res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user, data: result });
+    }).catch(function (error) {
+      console.error('Error fetching sensor data', error);
+      res.render('userHome', { active_icon: 'health', logged_in: true, user_info: global_user, data: [] });
+    })
 })
 
 /* GET camera page. */

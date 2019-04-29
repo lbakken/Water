@@ -11,16 +11,13 @@ connection = psycopg2.connect(
     port="5432",
     database="d9jgpghedbvma3")
 
-   # cursor = connection.cursor()
-   # postgres_insert_query = """ INSERT INTO mobile (ID, MODEL, PRICE) VALUES (%s,%s,%s)"""
-   # record_to_insert = ()
-   # cursor.execute(postgres_insert_query, record_to_insert)
-   # connection.commit()
+cursor = connection.cursor()
+postgres_insert_query = """ INSERT INTO user_info (user_ID, date_of_sensor, soil_moisture, photo_resistivity, temperature, humidity) VALUES (%s,%s,%s,%s,%s,%s)"""
 
 
 camera = PiCamera()
 
-arduino = serial.Serial('/dev/ttyUSB1', 9600)
+arduino = serial.Serial('/dev/ttyUSB0', 9600)
 
 should_water = True
 
@@ -41,8 +38,12 @@ while 1:
         water_today = False
         water_plant()
     if(arduino.in_waiting >0):
-        line = arduino.readline()
+        line = arduino.readline().decode("utf-8")[:-2].split(',')
         print(line)
-        #camera.capture('/home/pi/pics/' + now.strftime("%y-%m-%d-%H:%M:%S") + '.jpg')
-    sleep(6)
+        
+        record_to_insert = (36, now, line[0], line[1], line[2], line[3])
+        cursor.execute(postgres_insert_query, record_to_insert)
+        connection.commit()
+        camera.capture('/home/pi/pics/' + now.strftime("%y-%m-%d-%H:%M:%S") + '.jpg')
+    sleep(301)
 
