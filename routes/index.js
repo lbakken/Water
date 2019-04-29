@@ -73,19 +73,19 @@ function loggedIn(req, res, next) {
 
 /* GET logout page. */
 router.get('/logout', function (req, res, next) {
-  // req.logout()
+  global_user = null
   res.redirect('/login')
 })
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  var l = (req.user) ? true : false;
+  var l = (global_user) ? true : false;
   res.render('index', { title: 'Bonsai Buddy', active_icon: 'home', logged_in: l });
 });
 
 /* GET login page. */
 router.get('/login', function (req, res, next) {
-  var l = (req.user) ? true : false;
+  var l = (global_user) ? true : false;
   res.render('login', { active_icon: 'login', logged_in: l });
 })
 
@@ -114,7 +114,7 @@ router.post('/login', passport.authenticate('local', {
 
 /* GET register page. */
 router.get('/register', function (req, res, next) {
-  var l = (req.user) ? true : false;
+  var l = (global_user) ? true : false;
   res.render('register', { active_icon: 'register', logged_in: l });
 })
 
@@ -167,11 +167,6 @@ router.get('/CameraFeed', loggedIn, function (req, res, next) {
 /* GET pump page. */
 router.get('/pump', loggedIn, function (req, res, next) {
   res.render('pump', { active_icon: 'pump', logged_in: true, user_info: global_user });
-})
-
-/* GET pump page. */
-router.get('/pump', function (req, res, next) {
-  res.render('pump', {});
 })
 
 module.exports = router;

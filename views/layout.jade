@@ -8,12 +8,10 @@ html
 		meta( name='viewport', content='width=device-width, initial-scale=1.0' )
 		meta( name='description', content='Baking Bootstrap Snippets with Jade' )
 		link( href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/flatly/bootstrap.min.css", rel="stylesheet" )
- 
+
 	body
 		h1 Bonsai Buddy
-
 		link(rel='stylesheet', href='/stylesheets/style.css')
-
 		.topnav
 			.topnav-left
 				a(href='../')#home Home
@@ -25,10 +23,10 @@ html
 				a(href='register')#register Register
 		block content
 
-script.
-	if (!!!{logged_in}) {
-		#{'health'}.style.display = 'block'
-		#{'camera'}.style.display = 'block'
-		#{'pump'}.style.display = 'block'
-	}
-	#{active_icon}.className += 'active'
+	script.
+		if (!{logged_in}) {
+			#{'health'}.style.display = 'block'
+			#{'camera'}.style.display = 'block'
+			#{'pump'}.style.display = 'block'
+		}
+		#{active_icon}.className += 'active'
